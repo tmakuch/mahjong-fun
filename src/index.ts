@@ -2,11 +2,17 @@ import { parseHand } from './hand';
 
 const hands = [
   '2m3m4m:2m3m4m:2m3m4m*:6M6M6M:7M7M',
+  '4m3m2m:2m3m4m:2m4m3m*:6M6M6M:7M7M',
   '2m3m4m:2m3m4m:2m3m4m*:6M6M6M:7M9M',
   'rdrdrd:wdwdwd:gdgdgd:swswsw*:nwnw',
   'rdrdrd:wdwdwd:gdgdgd:swswsw*:nwew',
-  'this and next will throw',
+  'errors from here on now',
   '2m3m4m:2m3m4m:2m3m4m:6M6M6M:XYZA*',
+  '1m3m4m:2m3m4m:2m3m4m*:6M6M6M:7M7M',
+  '2s3m4m:2m3m4m:2m3m4m*:6M6M6M:7M7M',
+  '3m3m:2m3m4m:2m3m4m*:6M6M6M:7M7M',
+  '2m3m4m5m:2m3m4m:2m3m4m*:6M6M6M:7M7M',
+  '3m3m3m3m3m:2m3m4m:2m3m4m*:6M6M6M:7M7M',
 ];
 
 console.table(
@@ -32,10 +38,7 @@ console.table(
 );
 
 function stringifyWinningHand(hand: ReturnType<typeof parseHand>[0]) {
-  return [
-    ...hand.melds.map((meld) => Array.from(meld).join(',')),
-    Array.from(hand.pair).join(','),
-  ]
+  return [...hand.melds.map((meld) => meld.tiles.join(','))]
     .map((e) => `(${e})`)
     .join(' ');
 }

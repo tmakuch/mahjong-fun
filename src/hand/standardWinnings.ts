@@ -1,12 +1,7 @@
-import { Meld, Pair, SuitTile, Tile } from './types';
-
-type UnfinishedHand = {
-  melds: Meld[];
-  pair: Pair | null;
-};
+import { Hand, Meld, SuitTile, Tile } from './types';
 
 export function findWinningHand(input: Tile[], prioritizeTriples: boolean) {
-  const hand: UnfinishedHand = { melds: [], pair: null };
+  const hand: Hand = { melds: [] as Meld[] };
   input = [...input].sort((a, b) => {
     if (a.suit !== b.suit) {
       return a.suit > b.suit ? -1 : 1;
@@ -27,18 +22,19 @@ export function findWinningHand(input: Tile[], prioritizeTriples: boolean) {
       if (findAndRemoveTriple(input, hand, tile)) continue;
     }
 
-    if (!hand.pair && findAndRemovePair(input, hand, tile)) continue;
+    if (
+      !hand.melds.some((meld) => meld.type === 'pair') &&
+      findAndRemovePair(input, hand, tile)
+    )
+      continue;
 
     return null;
   }
 
-  return hand as {
-    melds: Meld[];
-    pair: Pair;
-  };
+  return hand;
 }
 
-function findAndRemoveTriple(input: Tile[], hand: UnfinishedHand, tile: Tile) {
+function findAndRemoveTriple(input: Tile[], hand: Hand, tile: Tile) {
   const nextTileIdx = input.findIndex(findNextTileForDuplicate(tile, 1));
   const secondNextTileIdx = input.findIndex(
     findNextTileForDuplicate(tile, nextTileIdx + 1),
@@ -46,11 +42,8 @@ function findAndRemoveTriple(input: Tile[], hand: UnfinishedHand, tile: Tile) {
 
   if (nextTileIdx > -1 && secondNextTileIdx > -1) {
     hand.melds.push({
-      0: tile,
-      1: input[nextTileIdx],
-      2: input[secondNextTileIdx],
-      length: 3,
-      isPon: true,
+      tiles: [tile, input[nextTileIdx], input[secondNextTileIdx]],
+      type: 'pon',
     });
     removeTiles(input, [secondNextTileIdx, nextTileIdx, 0]);
     return true;
@@ -58,21 +51,14 @@ function findAndRemoveTriple(input: Tile[], hand: UnfinishedHand, tile: Tile) {
   return false;
 }
 
-function findAndRemoveSequence(
-  input: Tile[],
-  hand: UnfinishedHand,
-  tile: SuitTile,
-) {
+function findAndRemoveSequence(input: Tile[], hand: Hand, tile: SuitTile) {
   const nextTileIdx = input.findIndex(findNextTileForSequence(tile, 1));
   const secondNextTileIdx = input.findIndex(findNextTileForSequence(tile, 2));
 
   if (nextTileIdx > -1 && secondNextTileIdx > -1) {
     hand.melds.push({
-      0: tile,
-      1: input[nextTileIdx],
-      2: input[secondNextTileIdx],
-      length: 3,
-      isChow: true,
+      tiles: [tile, input[nextTileIdx], input[secondNextTileIdx]],
+      type: 'chow',
     });
     removeTiles(input, [secondNextTileIdx, nextTileIdx, 0]);
     return true;
@@ -80,10 +66,10 @@ function findAndRemoveSequence(
   return false;
 }
 
-function findAndRemovePair(input: Tile[], hand: UnfinishedHand, tile: Tile) {
+function findAndRemovePair(input: Tile[], hand: Hand, tile: Tile) {
   const pairedTileIdx = input.findIndex(findNextTileForDuplicate(tile, 1));
   if (pairedTileIdx > -1) {
-    hand.pair = { 0: tile, 1: input[pairedTileIdx], length: 2 };
+    hand.melds.push({ tiles: [tile, input[pairedTileIdx]], type: 'pair' });
     removeTiles(input, [pairedTileIdx, 0]);
     return true;
   }

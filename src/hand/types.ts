@@ -83,33 +83,7 @@ export class WindTile extends ATile {
 export type HonourTile = DragonTile | WindTile;
 export type Tile = SuitTile | HonourTile;
 
-export type Meld =
-  | {
-      0: Tile;
-      1: Tile;
-      2: Tile;
-      length: 3;
-      isChow: true;
-    }
-  | {
-      0: Tile;
-      1: Tile;
-      2: Tile;
-      length: 3;
-      isPon: true;
-    }
-  | {
-      0: Tile;
-      1: Tile;
-      2: Tile;
-      3: Tile;
-      length: 4;
-      isPon: true;
-      isKan: true;
-    };
-
-export type Pair = {
-  0: Tile;
-  1: Tile;
-  length: 2;
+export type Meld = {
+  tiles: Tile[];
+  type: 'pair' | 'pon' | 'kan' | 'chow';
 };
