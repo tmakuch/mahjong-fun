@@ -1,7 +1,13 @@
 abstract class ATile {
   public value!: number | string;
   public suit!: string;
-  public isHidden!: boolean;
+  public isHidden: boolean;
+  public isLastTile: boolean;
+
+  constructor(input: string) {
+    this.isHidden = input[1].toLowerCase() !== input[1];
+    this.isLastTile = input[2] === '*';
+  }
 
   toString() {
     const code =
@@ -13,29 +19,26 @@ abstract class ATile {
 
 export class SuitTile extends ATile {
   public value: number;
-  public suit: 'character' | 'pin' | 'sow';
-  public isHidden: boolean;
+  public suit: 'man' | 'pin' | 'sou';
 
   constructor(input: string) {
-    super();
+    super(input);
     this.value = +input[0];
     this.suit =
-      input[1].toLowerCase() === 'c'
-        ? 'character'
+      input[1].toLowerCase() === 'm'
+        ? 'man'
         : input[1].toLowerCase() === 'p'
           ? 'pin'
-          : 'sow';
-    this.isHidden = input[1].toLowerCase() !== input[1];
+          : 'sou';
   }
 }
 
 export class DragonTile extends ATile {
   public value: 'white' | 'red' | 'green';
   public suit: 'dragon' = 'dragon';
-  public isHidden: boolean;
 
   constructor(input: string) {
-    super();
+    super(input);
     switch (input[0].toLowerCase()) {
       case 'w':
         this.value = 'white';
@@ -49,18 +52,15 @@ export class DragonTile extends ATile {
       default:
         throw new Error('Invalid hand');
     }
-
-    this.isHidden = input[1].toLowerCase() !== input[1];
   }
 }
 
 export class WindTile extends ATile {
   public value: 'west' | 'south' | 'east' | 'north';
   public suit: 'wind' = 'wind';
-  public isHidden: boolean;
 
   constructor(input: string) {
-    super();
+    super(input);
     switch (input[0].toLowerCase()) {
       case 'w':
         this.value = 'west';
@@ -77,8 +77,6 @@ export class WindTile extends ATile {
       default:
         throw new Error('Invalid hand - unrecognized wind');
     }
-
-    this.isHidden = input[1].toLowerCase() !== input[1];
   }
 }
 
@@ -91,14 +89,23 @@ export type Meld =
       1: Tile;
       2: Tile;
       length: 3;
-      isSequence: true;
+      isChow: true;
     }
   | {
       0: Tile;
       1: Tile;
       2: Tile;
       length: 3;
-      isTriple: true;
+      isPon: true;
+    }
+  | {
+      0: Tile;
+      1: Tile;
+      2: Tile;
+      3: Tile;
+      length: 4;
+      isPon: true;
+      isKan: true;
     };
 
 export type Pair = {

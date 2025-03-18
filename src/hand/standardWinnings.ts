@@ -50,7 +50,7 @@ function findAndRemoveTriple(input: Tile[], hand: UnfinishedHand, tile: Tile) {
       1: input[nextTileIdx],
       2: input[secondNextTileIdx],
       length: 3,
-      isTriple: true,
+      isPon: true,
     });
     removeTiles(input, [secondNextTileIdx, nextTileIdx, 0]);
     return true;
@@ -72,7 +72,7 @@ function findAndRemoveSequence(
       1: input[nextTileIdx],
       2: input[secondNextTileIdx],
       length: 3,
-      isSequence: true,
+      isChow: true,
     });
     removeTiles(input, [secondNextTileIdx, nextTileIdx, 0]);
     return true;

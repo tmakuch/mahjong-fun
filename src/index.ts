@@ -1,26 +1,37 @@
-import { findWinningHands, splitHand } from './hand';
+import { parseHand } from './hand';
 
 const hands = [
-  '2c3c4c2c3c4c2c3c4c6C6C6C7C7C',
-  '2c3c4c2c3c4c2c3c4c6C6C6C7C9C',
-  'rdrdrdwdwdwdgdgdgdswswswnwnw',
-  'rdrdrdwdwdwdgdgdgdswswswnwew',
+  '2m3m4m:2m3m4m:2m3m4m*:6M6M6M:7M7M',
+  '2m3m4m:2m3m4m:2m3m4m*:6M6M6M:7M9M',
+  'rdrdrd:wdwdwd:gdgdgd:swswsw*:nwnw',
+  'rdrdrd:wdwdwd:gdgdgd:swswsw*:nwew',
   'this and next will throw',
-  '2c3c4c2c3c4c2c3c4c6C6C6CXYZA',
+  '2m3m4m:2m3m4m:2m3m4m:6M6M6M:XYZA*',
 ];
 
-hands.forEach((hand) => {
-  try {
-    const winningHands = findWinningHands(splitHand(hand));
-    console.log(
-      `${hand}:\n\t${!winningHands.length ? 'nope' : winningHands.map(stringifyWinningHand).join('\n\t')}`,
-    );
-  } catch (e) {
-    console.error(`${hand}: \t${e}`);
-  }
-});
+console.table(
+  hands.map((hand) => {
+    let tournament: string[] | string;
+    let leisure: string[] | string;
+    try {
+      tournament = parseHand(hand, false).map(stringifyWinningHand);
+    } catch (e) {
+      tournament = (e as Error).message ?? e;
+    }
+    try {
+      leisure = parseHand(hand, true).map(stringifyWinningHand);
+    } catch (e) {
+      leisure = (e as Error).message ?? e;
+    }
+    return {
+      hand,
+      'tournament count': tournament,
+      'leisure count': leisure,
+    };
+  }),
+);
 
-function stringifyWinningHand(hand: ReturnType<typeof findWinningHands>[0]) {
+function stringifyWinningHand(hand: ReturnType<typeof parseHand>[0]) {
   return [
     ...hand.melds.map((meld) => Array.from(meld).join(',')),
     Array.from(hand.pair).join(','),
