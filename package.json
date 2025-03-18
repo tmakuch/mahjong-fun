@@ -1,0 +1,26 @@
+{
+  "name": "mahjong",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "nodemon ./src/index.ts",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3",
+    "prettier": "^3.5.3",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2"
+  },
+  "private": true,
+  "keywords": [],
+  "author": "Dmytro Sakhno",
+  "contributors": [
+    {
+      "name": "Tadeusz Makuch",
+      "email": "tadeusz.makuch@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "description": ""
+}
