@@ -87,3 +87,18 @@ export type Meld = {
   tiles: Tile[];
   type: 'pair' | 'pon' | 'kan' | 'chow';
 };
+
+export type Conditions = {
+  isTsumo: boolean;
+  isRiichi: boolean;
+  isDoubleRiichi: boolean;
+  isIppatsu: boolean;
+  isHaitei: boolean; //For haitei/houtei
+  isRinshan: boolean; //win from dead wall
+  isChankan: boolean; //Robbing a kan
+};
+
+export interface Hand {
+  melds: Meld[];
+  conditions?: Conditions;
+}

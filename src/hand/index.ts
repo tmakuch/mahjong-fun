@@ -3,7 +3,7 @@ import { findWinningHand } from './standardWinnings';
 
 const singleTileRegex = /[1-9][mspMSP]\*?|[rgwRGW][dD]\*?|[eswnESWN][wW]\*?/g;
 
-export function parseHand(input: string, allowReshuffle: boolean) {
+export function getHands(input: string, allowReshuffle: boolean) {
   if (
     !/^(?:(?:[1-9][mspMSP]\*?|[rgwRGW][dD]\*?|[eswnESWN][wW]\*?){2,4}:?){5}$/g.test(
       input,
