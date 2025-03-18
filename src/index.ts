@@ -1,4 +1,4 @@
-import { findAWinningHand, splitHand } from './hand';
+import { findWinningHands, splitHand } from './hand';
 
 const hands = [
   '2c3c4c2c3c4c2c3c4c6C6C6C7C7C',
@@ -11,17 +11,16 @@ const hands = [
 
 hands.forEach((hand) => {
   try {
-    const aWinningHand = findAWinningHand(splitHand(hand));
-    console.log(`${hand}: ${stringifyWinningHand(aWinningHand)}`);
+    const winningHands = findWinningHands(splitHand(hand));
+    console.log(
+      `${hand}:\n\t${!winningHands.length ? 'nope' : winningHands.map(stringifyWinningHand).join('\n\t')}`,
+    );
   } catch (e) {
-    console.error(`${hand}: ${e}`);
+    console.error(`${hand}: \t${e}`);
   }
 });
 
-function stringifyWinningHand(hand: ReturnType<typeof findAWinningHand>) {
-  if (!hand) {
-    return 'nope';
-  }
+function stringifyWinningHand(hand: ReturnType<typeof findWinningHands>[0]) {
   return [
     ...hand.melds.map((meld) => Array.from(meld).join(',')),
     Array.from(hand.pair).join(','),
