@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="e2e" type="NodeJsTestRunner">
+    <node-interpreter value="node" />
+    <node-options value="-r ts-node/register -r tsconfig-paths/register" />
+    <working-dir value="$PROJECT_DIR$" />
+    <language value="JAVA_SCRIPT" />
+    <typescript-loader value="MANUAL_SETUP_IN_NODE_OPTION" />
+    <envs>
+      <env name="TS_NODE_PROJECT" value="tsconfig.json" />
+    </envs>
+    <scope-kind value="TEST_FILE" />
+    <test-file value="$PROJECT_DIR$/tests/e2e.ts" />
+    <method v="2" />
+  </configuration>
+</component>
