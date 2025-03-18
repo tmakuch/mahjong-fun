@@ -1,4 +1,4 @@
-abstract class ATile {
+export abstract class ATile {
   public value!: number | string;
   public suit!: string;
   public isHidden: boolean;
@@ -14,6 +14,18 @@ abstract class ATile {
       (typeof this.value === 'number' ? this.value : this.value[0]) +
       this.suit[0];
     return this.isHidden ? code.toUpperCase() : code;
+  }
+
+  public static getTile(tile: string): Tile {
+    if (tile[1].toLowerCase() === 'w') {
+      return new WindTile(tile);
+    }
+
+    if (tile[1].toLowerCase() === 'd') {
+      return new DragonTile(tile);
+    }
+
+    return new SuitTile(tile);
   }
 }
 
@@ -82,23 +94,3 @@ export class WindTile extends ATile {
 
 export type HonourTile = DragonTile | WindTile;
 export type Tile = SuitTile | HonourTile;
-
-export type Meld = {
-  tiles: Tile[];
-  type: 'pair' | 'pon' | 'kan' | 'chow';
-};
-
-export type Conditions = {
-  isTsumo: boolean;
-  isRiichi: boolean;
-  isDoubleRiichi: boolean;
-  isIppatsu: boolean;
-  isHaitei: boolean; //For haitei/houtei
-  isRinshan: boolean; //win from dead wall
-  isChankan: boolean; //Robbing a kan
-};
-
-export interface Hand {
-  melds: Meld[];
-  conditions?: Conditions;
-}

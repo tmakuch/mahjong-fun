@@ -1,4 +1,4 @@
-import { DragonTile, Hand, Meld, SuitTile, Tile, WindTile } from './types';
+import { ATile, Hand, Meld } from './types';
 import { findWinningHand } from './standardWinnings';
 
 const singleTileRegex = /[1-9][mspMSP]\*?|[rgwRGW][dD]\*?|[eswnESWN][wW]\*?/g;
@@ -16,7 +16,7 @@ export function getHands(input: string, allowReshuffle: boolean) {
     if (!rawHand) {
       throw new Error('Invalid hand - could not parse tiles');
     }
-    const hand = rawHand.map(parseTile);
+    const hand = rawHand.map(ATile.getTile);
 
     return [findWinningHand(hand, false), findWinningHand(hand, true)].filter(
       (hand) => hand !== null,
@@ -33,40 +33,7 @@ export function getHands(input: string, allowReshuffle: boolean) {
       }
       rawTiles.sort((a, b) => (a === b ? 0 : a > b ? 1 : -1));
 
-      const tiles = rawTiles.map(parseTile);
-      switch (tiles.length) {
-        case 2:
-          if (!areSameSuit(tiles) || !areSameSuit(tiles)) {
-            throw new Error('Provided pair does not have tiles equal');
-          }
-          result.melds.push({
-            tiles: tiles,
-            type: 'pair',
-          });
-          break;
-        case 3:
-        case 4:
-          const meld = {
-            tiles,
-            type: (tiles.length === 4
-              ? 'kan'
-              : isSequence(tiles)
-                ? 'chow'
-                : 'pon') as 'kan' | 'chow' | 'pon',
-          };
-          if (
-            !areSameSuit(tiles) ||
-            (meld.type !== 'chow' && !areSameValue(tiles))
-          ) {
-            throw new Error(
-              `Provided ${meld.type} does not have tile${meld.type === 'chow' ? ' suits' : 's'} equal`,
-            );
-          }
-          result.melds.push(meld);
-          break;
-        default:
-          throw new Error('Provided meld has incorrect number for tiles');
-      }
+      result.melds.push(new Meld(rawTiles.map(ATile.getTile)));
     });
 
     const countTypes = result.melds.reduce(
@@ -95,33 +62,4 @@ export function getHands(input: string, allowReshuffle: boolean) {
 
     return [result];
   }
-}
-
-function areSameSuit(tiles: Tile[]) {
-  return tiles.every((tile) => tile.suit === tiles[0].suit);
-}
-
-function areSameValue(tiles: Tile[]) {
-  return tiles.every((tile) => tile.value === tiles[0].value);
-}
-
-function isSequence(tiles: Tile[]) {
-  if (typeof tiles[0].value === 'string') {
-    return false;
-  }
-  return tiles.every(
-    (tile, idx) => tile.value === (tiles[0].value as number) + idx,
-  );
-}
-
-function parseTile(tile: string): Tile {
-  if (tile[1].toLowerCase() === 'w') {
-    return new WindTile(tile);
-  }
-
-  if (tile[1].toLowerCase() === 'd') {
-    return new DragonTile(tile);
-  }
-
-  return new SuitTile(tile);
 }
