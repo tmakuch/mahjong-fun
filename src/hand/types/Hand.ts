@@ -1,16 +1,16 @@
 import { Meld } from './index';
 
 type Conditions = {
-  isTsumo: boolean;
-  isRiichi: boolean;
-  isDoubleRiichi: boolean;
-  isIppatsu: boolean;
-  isHaitei: boolean; //For haitei/houtei
-  isRinshan: boolean; //win from dead wall
-  isChankan: boolean; //Robbing a kan
+  /*To*/ isTsumo: boolean;
+  /*Ri*/ isRiichi: boolean;
+  /*DR*/ isDoubleRiichi: boolean;
+  /*Iu*/ isIppatsu: boolean;
+  /*Hi*/ isHaitei: boolean; //For haitei/houtei
+  /*Rn*/ isRinshan: boolean; //win from dead wall
+  /*Cn*/ isChankan: boolean; //Robbing a kan
 };
 
 export default interface Hand {
   melds: Meld[];
-  conditions?: Conditions;
+  conditions: Conditions;
 }

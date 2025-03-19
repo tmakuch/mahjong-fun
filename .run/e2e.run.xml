@@ -9,7 +9,7 @@
       <env name="TS_NODE_PROJECT" value="tsconfig.json" />
     </envs>
     <scope-kind value="TEST_FILE" />
-    <test-file value="$PROJECT_DIR$/tests/e2e.ts" />
+    <test-file value="$PROJECT_DIR$/tests/index.ts" />
     <method v="2" />
   </configuration>
 </component>
