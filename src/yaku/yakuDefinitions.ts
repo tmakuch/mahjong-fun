@@ -1,25 +1,58 @@
 import { Hand, Meld, Tile } from '../hand/types';
+import Yaku from '@/yaku/Yaku';
 
 //TODO: -------- one han closed --------
-function isRiichi(hand: Hand) {
+export function isRiichi(hand: Hand): Yaku | null {
   //TODO: riichi has been declared
   //TODO: ippatsu here or separate function?
   //Special condition?
-  return hand.conditions?.isRiichi;
+  const name = 'Riichi';
+
+  if (hand.conditions?.isRiichi) {
+    return { name, han: 1, occurrences: 1 };
+  }
+  return null;
 }
 
-export function isMenzenTsumo(hand: Hand) {
+export function isMenzenTsumo(hand: Hand): Yaku | null {
+  const name = 'Menzen tsumo';
   //TODO: win by self-draw on closed hand
-  return (
-    hand.conditions?.isTsumo &&
+  if (
+    // hand.conditions?.isTsumo &&
     hand.melds.every((meld: Meld) =>
-      meld.tiles.every((tile: Tile) => tile.isHidden),
+      meld.tiles.every((tile: Tile) => tile.isConcealed),
     )
-  );
+  ) {
+    return { name, han: 1, occurrences: 1 };
+  }
+
+  return null;
 }
 
-function isPinfu() {
+export function isPinfu(hand: Hand): Yaku | null {
   //TODO: all sequences, pair is not yakuhai, ryanmen wait (open wait) at tenpai
+  const name = 'Pinfu';
+  const ryanmenRegex = /([^1]\*\d\d)|(\d\d[^9]\*)/g;
+
+  const chowCount = hand.melds.filter(
+    (meld: Meld) => meld.type === 'chow',
+  ).length;
+  const pairCount = hand.melds.filter(
+    (meld: Meld) => meld.type === 'pair',
+  ).length;
+  const isConcealed = hand.melds.every((meld: Meld) => meld.isConcealed);
+  const isRyanmenWait = hand.melds.some((meld: Meld) =>
+    ryanmenRegex.test(
+      meld.tiles
+        .map((tile) => `${tile.value}${tile.isLastTile ? '*' : ''}`)
+        .join(''),
+    ),
+  );
+
+  if (chowCount === 4 && pairCount === 1 && isRyanmenWait && isConcealed) {
+    return { name, han: 1, occurrences: 1 };
+  }
+  return null;
 }
 
 function isIppeikou() {
@@ -31,6 +64,7 @@ function isHaitei(hand: Hand) {
   //TODO: Haitei raoyue - win by drawing last tile from the wall or last discard (Houtei raoyui)
   //Special condition?
   //May be open
+  const name = 'Haitei';
   return hand.conditions?.isHaitei;
 }
 
@@ -45,9 +79,22 @@ function isChankan() {
   //May be open
 }
 
-function isTanyao() {
+export function isTanyao(hand: Hand): Yaku | null {
   //TODO: Tanyao - no 1's, no 9's, no honors
   //May be open, in some rulesets can only be closed
+  const name = 'Tanyao';
+
+  const isFreeOfTerminals = hand.melds.every((meld: Meld) =>
+    meld.tiles.every((tile) => tile.value !== (1 || 9)),
+  );
+  const isFreeOfHonors = hand.melds.every(
+    (meld: Meld) => meld.suit !== 'wind' && meld.suit !== 'dragon',
+  );
+
+  if (isFreeOfTerminals && isFreeOfHonors) {
+    return { name, han: 1, occurrences: 1 };
+  }
+  return null;
 }
 
 function isYakuhai() {

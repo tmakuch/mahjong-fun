@@ -6,7 +6,7 @@ type Conditions = {
   isDoubleRiichi: boolean;
   isIppatsu: boolean;
   isHaitei: boolean; //For haitei/houtei
-  isRinshan: boolean; //win from dead wall
+  isRinshan: boolean; //Win from dead wall
   isChankan: boolean; //Robbing a kan
 };
 

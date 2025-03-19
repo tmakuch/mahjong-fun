@@ -42,3 +42,49 @@ export const workingHands = [
     },
   },
 ];
+
+export const winningHands = [
+  {
+    input: '2M3M4M:2P3P4P:2S3S4S*:4P5P6P:7M7M',
+    expected: {
+      yaku: [
+        [
+          {
+            han: 1,
+            name: 'Menzen tsumo',
+            occurrences: 1,
+          },
+          {
+            han: 1,
+            name: 'Pinfu',
+            occurrences: 1,
+          },
+          {
+            han: 1,
+            name: 'Tanyao',
+            occurrences: 1,
+          },
+        ],
+      ],
+    },
+  },
+  {
+    input: '2M3M4M:2M3M4M:2M3M4M*:6M6M6M:7M7M',
+    expected: {
+      yaku: [
+        [
+          {
+            han: 1,
+            name: 'Menzen tsumo',
+            occurrences: 1,
+          },
+          {
+            han: 1,
+            name: 'Tanyao',
+            occurrences: 1,
+          },
+        ],
+      ],
+    },
+  },
+];

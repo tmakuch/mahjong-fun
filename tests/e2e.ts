@@ -2,8 +2,9 @@ import { describe, it } from 'node:test';
 import * as assert from 'node:assert';
 
 import { getHands } from '@/hand';
-import { failingsHands, workingHands } from './data';
+import { failingsHands, winningHands, workingHands } from './data';
 import { stringifyWinningHand } from './utils';
+import { findValidYaku } from '@/yaku/yakuFinder';
 
 describe('tests', () => {
   describe('failing hands', () => {
@@ -45,6 +46,15 @@ describe('tests', () => {
         it(`${testCase.input} should parse`, () => {
           assert.deepEqual(test(testCase.input), testCase.expected.leisure);
         });
+      });
+    });
+  });
+
+  describe('counting hand value', () => {
+    winningHands.forEach((testCase) => {
+      const test = (input: string) => getHands(input, false).map(findValidYaku);
+      it(`${testCase.input} should return correct yaku list`, () => {
+        assert.deepEqual(test(testCase.input), testCase.expected.yaku);
       });
     });
   });

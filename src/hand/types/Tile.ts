@@ -1,11 +1,11 @@
 export abstract class ATile {
   public value!: number | string;
   public suit!: string;
-  public isHidden: boolean;
+  public isConcealed: boolean;
   public isLastTile: boolean;
 
   constructor(input: string) {
-    this.isHidden = input[1].toLowerCase() !== input[1];
+    this.isConcealed = input[1].toLowerCase() !== input[1];
     this.isLastTile = input[2] === '*';
   }
 
@@ -13,7 +13,7 @@ export abstract class ATile {
     const code =
       (typeof this.value === 'number' ? this.value : this.value[0]) +
       this.suit[0];
-    return this.isHidden ? code.toUpperCase() : code;
+    return this.isConcealed ? code.toUpperCase() : code;
   }
 
   public static getTile(tile: string): Tile {
