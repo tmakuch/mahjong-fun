@@ -35,9 +35,32 @@ describe('names', () => {
   });
 });
 describe('parsing', () => {
+  it('should allow no delimiter for conditions', () => {
+    assert.doesNotThrow(() => {
+      const hand = getHands(exampleHand + ';', false);
+      assert.deepEqual(hand[0].conditions, {
+        isTsumo: false,
+        isRiichi: false,
+        isDoubleRiichi: false,
+        isIppatsu: false,
+        isHaitei: false,
+        isRinshan: false,
+        isChankan: false,
+      });
+    });
+  });
   it('should allow empty conditions', () => {
     assert.doesNotThrow(() => {
-      getHands(exampleHand + ';', false);
+      const hand = getHands(exampleHand + ';', false);
+      assert.deepEqual(hand[0].conditions, {
+        isTsumo: false,
+        isRiichi: false,
+        isDoubleRiichi: false,
+        isIppatsu: false,
+        isHaitei: false,
+        isRinshan: false,
+        isChankan: false,
+      });
     });
   });
   it('should allow single condition', () => {
