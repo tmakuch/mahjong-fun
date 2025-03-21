@@ -12,7 +12,8 @@ export abstract class ATile {
   toString() {
     const code =
       (typeof this.value === 'number' ? this.value : this.value[0]) +
-      this.suit[0];
+      this.suit[0] +
+      (this.isLastTile ? '*' : '');
     return this.isHidden ? code.toUpperCase() : code;
   }
 

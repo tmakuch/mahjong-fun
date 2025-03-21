@@ -175,7 +175,12 @@ export default class Hand {
             }
             return 1;
           }
-          return a.string === b.string ? 0 : a.string > b.string ? 1 : -1;
+          //sort but ignore last tile from comparison
+          return a.string.replace('*', '') === b.string.replace('*', '')
+            ? 0
+            : a.string.replace('*', '') > b.string.replace('*', '')
+              ? 1
+              : -1;
         },
       )
       .map((e) => `(${e.string})`)
