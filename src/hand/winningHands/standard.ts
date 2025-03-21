@@ -96,7 +96,7 @@ function findNextTileForSequence(forTile: SuitTile, whichNext: 1 | 2) {
   return (t: Tile) =>
     t.value === forTile.value + whichNext &&
     t.suit === forTile.suit &&
-    t.isHidden === forTile.isHidden;
+    t.isConcealed === forTile.isConcealed;
 }
 
 function findNextTileForDuplicate(forTile: Tile, skip: number = 1) {
@@ -104,5 +104,5 @@ function findNextTileForDuplicate(forTile: Tile, skip: number = 1) {
     idx >= skip &&
     t.value === forTile.value &&
     t.suit === forTile.suit &&
-    t.isHidden === forTile.isHidden;
+    t.isConcealed === forTile.isConcealed;
 }

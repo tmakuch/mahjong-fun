@@ -8,8 +8,8 @@ export default class Meld {
     return this.tiles[0].suit;
   }
 
-  public get isHidden() {
-    return this.tiles.every((tile) => tile.isHidden);
+  public get isConcealed() {
+    return this.tiles.every((tile) => tile.isConcealed);
   }
 
   constructor(tiles: Tile[]) {
