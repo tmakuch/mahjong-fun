@@ -41,7 +41,18 @@ export default class Hand {
       }
       const hand = rawHand.map(ATile.getTile);
 
-      return [findWinningHand(hand, false), findWinningHand(hand, true)]
+      return [
+        findWinningHand(hand, {
+          prioritizeTriples: false,
+          prioritizePair: false,
+          reverseOrder: false,
+        }),
+        findWinningHand(hand, {
+          prioritizeTriples: true,
+          prioritizePair: false,
+          reverseOrder: false,
+        }),
+      ]
         .filter((hand) => hand !== null)
         .map((melds) => new Hand(melds, conditions));
     } else {
