@@ -53,6 +53,7 @@ export const workingHands = [
         '(3P,4P,5P) (5P,6P,7P) (5P,6P,7P) (5P,6P,7P*) (8P,8P)',
         '(3P,4P,5P) (5P,5P,5P) (6P,6P,6P) (7P,7P,7P*) (8P,8P)',
         '(3P,4P,5P) (5P,6P,7P) (6P,7P,8P) (6P,7P*,8P) (5P,5P)',
+        //'(3P,4P,5P) (5P,6P,7P*) (6P,7P,8P) (6P,7P,8P) (5P,5P)',
       ],
     },
   },
