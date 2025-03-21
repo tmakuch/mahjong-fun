@@ -1,4 +1,4 @@
-import { Meld, SuitTile, Tile } from './types';
+import { Meld, SuitTile, Tile } from '../index';
 
 export function findWinningHand(input: Tile[], prioritizeTriples: boolean) {
   const melds: Meld[] = [];

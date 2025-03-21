@@ -1,8 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import { Hand } from '@/hand/types';
+import { Hand } from '@/hand';
 import { workingHands } from './data';
-import { getHands } from '@/hand';
 
 const allPossibleConditions: Hand['conditions'] = {
   isTsumo: true,
@@ -37,7 +36,7 @@ describe('names', () => {
 describe('parsing', () => {
   it('should allow no delimiter for conditions', () => {
     assert.doesNotThrow(() => {
-      const hand = getHands(exampleHand + ';', false);
+      const hand = Hand.findAllWinningSets(exampleHand + ';', false);
       assert.deepEqual(hand[0].conditions, {
         isTsumo: false,
         isRiichi: false,
@@ -51,7 +50,7 @@ describe('parsing', () => {
   });
   it('should allow empty conditions', () => {
     assert.doesNotThrow(() => {
-      const hand = getHands(exampleHand + ';', false);
+      const hand = Hand.findAllWinningSets(exampleHand + ';', false);
       assert.deepEqual(hand[0].conditions, {
         isTsumo: false,
         isRiichi: false,
@@ -64,7 +63,7 @@ describe('parsing', () => {
     });
   });
   it('should allow single condition', () => {
-    const hand = getHands(exampleHand + ';to', false);
+    const hand = Hand.findAllWinningSets(exampleHand + ';to', false);
     assert.deepEqual(hand[0].conditions, {
       isTsumo: true,
       isRiichi: false,
@@ -76,7 +75,7 @@ describe('parsing', () => {
     });
   });
   it('should allow multiple condition', () => {
-    const hand = getHands(exampleHand + ';to:dr', false);
+    const hand = Hand.findAllWinningSets(exampleHand + ';to:dr', false);
     assert.deepEqual(hand[0].conditions, {
       isTsumo: true,
       isRiichi: false,
@@ -88,6 +87,6 @@ describe('parsing', () => {
     });
   });
   it('should not allow conditions without delimeter', () => {
-    assert.throws(() => getHands(exampleHand + ';todr', false));
+    assert.throws(() => Hand.findAllWinningSets(exampleHand + ';todr', false));
   });
 });

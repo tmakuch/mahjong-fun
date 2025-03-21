@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import * as assert from 'node:assert';
 
-import { getHands } from '@/hand';
+import { Hand } from '@/hand';
 import { failingsHands, workingHands } from './data';
 import { stringifyWinningHand } from './utils';
 
@@ -9,7 +9,7 @@ describe('failing hands', () => {
   describe('tournament counts', () => {
     failingsHands.forEach((testCase) => {
       it(`${testCase} should throw error`, () =>
-        assert.throws(() => getHands(testCase, false)));
+        assert.throws(() => Hand.findAllWinningSets(testCase, false)));
     });
   });
 
@@ -17,7 +17,7 @@ describe('failing hands', () => {
     failingsHands.forEach((testCase) => {
       it(`${testCase} should throw error or return no winnings hands`, () =>
         assert.throws(() => {
-          const winningsHands = getHands(testCase, true);
+          const winningsHands = Hand.findAllWinningSets(testCase, true);
 
           if (!winningsHands.length) {
             throw new Error('no winnings hands');
@@ -31,7 +31,7 @@ describe('winnings hands', () => {
   describe('tournament counts', () => {
     workingHands.forEach((testCase) => {
       const test = (input: string) =>
-        getHands(input, false).map(stringifyWinningHand);
+        Hand.findAllWinningSets(input, false).map(stringifyWinningHand);
       it(`${testCase.input} should parse`, () => {
         assert.deepEqual(test(testCase.input), testCase.expected.tournament);
       });
@@ -40,7 +40,7 @@ describe('winnings hands', () => {
   describe('leisure counts', () => {
     workingHands.forEach((testCase) => {
       const test = (input: string) =>
-        getHands(input, true).map(stringifyWinningHand);
+        Hand.findAllWinningSets(input, true).map(stringifyWinningHand);
       it(`${testCase.input} should parse`, () => {
         assert.deepEqual(test(testCase.input), testCase.expected.leisure);
       });

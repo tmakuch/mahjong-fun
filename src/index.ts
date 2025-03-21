@@ -1,4 +1,4 @@
-import { getHands } from './hand';
+import { Hand } from './hand';
 import { isMenzenTsumo } from './yaku/yakuDefinitions';
 
 const notTsumo = '2m3m4m:2m3m4m:2m3m4m*:6M6M6M:7M7M';
@@ -20,28 +20,32 @@ const hands = [
 ];
 
 console.table(
-  hands.map((hand) => {
+  hands.map((rawHand) => {
     let tournament: string[] | string;
     let leisure: string[] | string;
     try {
-      tournament = getHands(hand, false).map(stringifyWinningHand);
+      tournament = Hand.findAllWinningSets(rawHand, false).map(
+        stringifyWinningHand,
+      );
     } catch (e) {
       tournament = (e as Error).message ?? e;
     }
     try {
-      leisure = getHands(hand, true).map(stringifyWinningHand);
+      leisure = Hand.findAllWinningSets(rawHand, true).map(
+        stringifyWinningHand,
+      );
     } catch (e) {
       leisure = (e as Error).message ?? e;
     }
     return {
-      hand,
+      hand: rawHand,
       'tournament count': tournament,
       'leisure count': leisure,
     };
   }),
 );
 
-function stringifyWinningHand(hand: ReturnType<typeof getHands>[0]) {
+function stringifyWinningHand(hand: Hand) {
   return [...hand.melds.map((meld) => meld.tiles.join(','))]
     .map((e) => `(${e})`)
     .join(' ');

@@ -1,4 +1,4 @@
-import { Hand, Meld, Tile } from '../hand/types';
+import { Hand, Meld, Tile } from '../hand';
 
 //TODO: -------- one han closed --------
 function isRiichi(hand: Hand) {
