@@ -35,10 +35,14 @@ export const workingHands = [
     input: 'rdrdrd:wdwdwd:gdgdgd:swswsw*:nwnw',
     expected: {
       tournament: ['(rd,rd,rd) (wd,wd,wd) (gd,gd,gd) (sw,sw,sw) (nw,nw)'],
-      leisure: [
-        '(nw,nw) (sw,sw,sw) (gd,gd,gd) (rd,rd,rd) (wd,wd,wd)',
-        '(nw,nw) (sw,sw,sw) (gd,gd,gd) (rd,rd,rd) (wd,wd,wd)',
-      ],
+      leisure: ['(gd,gd,gd) (rd,rd,rd) (wd,wd,wd) (sw,sw,sw) (nw,nw)'],
+    },
+  },
+  {
+    input: 'rdrdrd:1s1s1s:gdgdgd:swswsw*:nwnw',
+    expected: {
+      tournament: ['(rd,rd,rd) (1s,1s,1s) (gd,gd,gd) (sw,sw,sw) (nw,nw)'],
+      leisure: ['(1s,1s,1s) (gd,gd,gd) (rd,rd,rd) (sw,sw,sw) (nw,nw)'],
     },
   },
 ];

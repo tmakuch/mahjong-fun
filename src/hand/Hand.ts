@@ -1,4 +1,4 @@
-import { ATile, Meld } from './index';
+import { ATile, DragonTile, Meld, SuitTile, WindTile } from './index';
 import { findWinningHand } from './winningHands/standard';
 
 type Conditions = {
@@ -15,6 +15,7 @@ export default class Hand {
   private constructor(
     public melds: Meld[],
     public conditions: Conditions,
+    private allowReshuffle: boolean,
   ) {}
 
   public static findAllWinningSets(
@@ -52,9 +53,45 @@ export default class Hand {
           prioritizePair: false,
           reverseOrder: false,
         }),
+        findWinningHand(hand, {
+          prioritizeTriples: false,
+          prioritizePair: true,
+          reverseOrder: false,
+        }),
+        findWinningHand(hand, {
+          prioritizeTriples: true,
+          prioritizePair: true,
+          reverseOrder: false,
+        }),
+        findWinningHand(hand, {
+          prioritizeTriples: false,
+          prioritizePair: false,
+          reverseOrder: true,
+        }),
+        findWinningHand(hand, {
+          prioritizeTriples: true,
+          prioritizePair: false,
+          reverseOrder: true,
+        }),
+        findWinningHand(hand, {
+          prioritizeTriples: false,
+          prioritizePair: true,
+          reverseOrder: true,
+        }),
+        findWinningHand(hand, {
+          prioritizeTriples: true,
+          prioritizePair: true,
+          reverseOrder: true,
+        }),
       ]
         .filter((hand) => hand !== null)
-        .map((melds) => new Hand(melds, conditions));
+        .map((melds) => new Hand(melds, conditions, allowReshuffle))
+        .reduce((result, next) => {
+          if (result.every((hand) => hand.toString() !== next.toString())) {
+            result.push(next);
+          }
+          return result;
+        }, [] as Hand[]);
     } else {
       const melds: Meld[] = [];
 
@@ -93,8 +130,56 @@ export default class Hand {
         throw new Error('Invalid count of melds in the hand');
       }
 
-      return [new Hand(melds, conditions)];
+      return [new Hand(melds, conditions, allowReshuffle)];
     }
+  }
+
+  valueOf() {
+    return this.toString();
+  }
+
+  toString() {
+    return [
+      ...this.melds.map((meld) => ({
+        meld: meld,
+        string: meld.tiles
+          .map((tile) => tile.toString())
+          .toSorted((a: string, b: string) =>
+            !this.allowReshuffle || a === b ? 0 : a > b ? 1 : -1,
+          )
+          .join(','),
+      })),
+    ]
+      .toSorted(
+        (
+          a: { meld: Meld; string: string },
+          b: { meld: Meld; string: string },
+        ) => {
+          if (!this.allowReshuffle) {
+            return 0;
+          }
+          // pons before pairs, kans are treated like pons
+          if (
+            Math.min(3, a.meld.tiles.length) !==
+            Math.min(3, b.meld.tiles.length)
+          ) {
+            return a.meld.tiles.length > b.meld.tiles.length ? -1 : 1;
+          }
+          if (a.meld.tiles[0].constructor !== b.meld.tiles[0].constructor) {
+            if (
+              a.meld.tiles[0] instanceof SuitTile ||
+              (a.meld.tiles[0] instanceof DragonTile &&
+                b.meld.tiles[0] instanceof WindTile)
+            ) {
+              return -1;
+            }
+            return 1;
+          }
+          return a.string === b.string ? 0 : a.string > b.string ? 1 : -1;
+        },
+      )
+      .map((e) => `(${e.string})`)
+      .join(' ');
   }
 }
 

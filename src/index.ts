@@ -24,16 +24,14 @@ console.table(
     let tournament: string[] | string;
     let leisure: string[] | string;
     try {
-      tournament = Hand.findAllWinningSets(rawHand, false).map(
-        stringifyWinningHand,
+      tournament = Hand.findAllWinningSets(rawHand, false).map((h) =>
+        h.toString(),
       );
     } catch (e) {
       tournament = (e as Error).message ?? e;
     }
     try {
-      leisure = Hand.findAllWinningSets(rawHand, true).map(
-        stringifyWinningHand,
-      );
+      leisure = Hand.findAllWinningSets(rawHand, true).map((h) => h.toString());
     } catch (e) {
       leisure = (e as Error).message ?? e;
     }
@@ -44,9 +42,3 @@ console.table(
     };
   }),
 );
-
-function stringifyWinningHand(hand: Hand) {
-  return [...hand.melds.map((meld) => meld.tiles.join(','))]
-    .map((e) => `(${e})`)
-    .join(' ');
-}
