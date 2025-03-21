@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "nodemon ./src/index.ts",
+    "dev": "nodemon -r tsconfig-paths/register ./src/index.ts",
     "build": "tsc"
   },
   "devDependencies": {

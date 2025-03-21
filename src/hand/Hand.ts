@@ -1,5 +1,7 @@
 import { ATile, DragonTile, Meld, SuitTile, WindTile } from './index';
 import { findWinningHand } from './winningHands/standard';
+import Yaku from '@/yaku/Yaku';
+import { findValidYaku } from '@/yaku/yakuFinder';
 
 type Conditions = {
   /*To*/ isTsumo: boolean;
@@ -12,11 +14,15 @@ type Conditions = {
 };
 
 export default class Hand {
+  public yaku: Yaku[];
+
   private constructor(
     public melds: Meld[],
     public conditions: Conditions,
     private allowReshuffle: boolean,
-  ) {}
+  ) {
+    this.yaku = findValidYaku(this);
+  }
 
   public static findAllWinningSets(
     input: string,
@@ -139,7 +145,7 @@ export default class Hand {
   }
 
   toString() {
-    return [
+    const melds = [
       ...this.melds.map((meld) => ({
         meld: meld,
         string: meld.tiles
@@ -185,6 +191,18 @@ export default class Hand {
       )
       .map((e) => `(${e.string})`)
       .join(' ');
+
+    const yaku = this.yaku
+      .toSorted((a, b) => {
+        if (a.han !== b.han) {
+          return a.han > b.han ? -1 : 1;
+        }
+        return a.name === b.name ? 0 : a.name > b.name ? 1 : -1;
+      })
+      .map((yaku) => `${yaku.occurrences}x ${yaku.name} (${yaku.han} han)`)
+      .join(', ');
+
+    return melds + ': ' + yaku;
   }
 }
 
