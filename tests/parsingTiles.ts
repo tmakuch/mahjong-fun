@@ -2,7 +2,7 @@ import { describe, it } from 'node:test';
 import * as assert from 'node:assert';
 
 import { Hand } from '@/hand';
-import { failingsHands, workingHands, winningHands } from './data';
+import { failingsHands, workingHands, winningHands } from '@data';
 import { findValidYaku } from '@/yaku/yakuFinder';
 
 describe('failing hands', () => {

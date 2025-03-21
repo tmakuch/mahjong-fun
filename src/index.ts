@@ -1,18 +1,10 @@
 import { Hand } from './hand';
+import * as data from '@data';
 
 const hands = [
-  '2m3m4m:2m3m4m:2m3m4m*:6M6M6M:7M7M',
-  '4m3m2m:2m3m4m:2m4m3m*:6M6M6M:7M7M',
-  '2m3m4m:2m3m4m:2m3m4m*:6M6M6M:7M9M',
-  'rdrdrd:wdwdwd:gdgdgd:swswsw*:nwnw',
-  'rdrdrd:wdwdwd:gdgdgd:swswsw*:nwew',
-  'errors from here on now',
-  '2m3m4m:2m3m4m:2m3m4m:6M6M6M:XYZA*',
-  '1m3m4m:2m3m4m:2m3m4m*:6M6M6M:7M7M',
-  '2s3m4m:2m3m4m:2m3m4m*:6M6M6M:7M7M',
-  '3m3m:2m3m4m:2m3m4m*:6M6M6M:7M7M',
-  '2m3m4m5m:2m3m4m:2m3m4m*:6M6M6M:7M7M',
-  '3m3m3m3m3m:2m3m4m:2m3m4m*:6M6M6M:7M7M',
+  ...data.winningHands.map((_) => _.input),
+  ...data.workingHands.map((_) => _.input),
+  ...data.failingsHands,
 ];
 
 drawTable(parseHands(hands));

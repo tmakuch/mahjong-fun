@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import { Hand } from '@/hand';
-import { workingHands } from './data';
+import { workingHands } from '@data';
 
 const allPossibleConditions: Hand['conditions'] = {
   isTsumo: true,
