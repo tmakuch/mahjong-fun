@@ -3,6 +3,7 @@ import { findWinningHand } from './winningHands/standard';
 import Yaku from '@/yaku/Yaku';
 import { findValidYaku } from '@/yaku/yakuFinder';
 import { findSevenPairs } from '@/hand/winningHands/sevenPairs';
+import { findThirteenGates } from '@/hand/winningHands/thirteenGates';
 
 type Conditions = {
   /*To*/ isTsumo: boolean;
@@ -15,9 +16,11 @@ type Conditions = {
 };
 
 const tileRegexString = '[1-9][mspMSP]\\*?|[rgwRGW][dD]\\*?|[eswnESWN][wW]\\*?';
+const terminalOrHonorTileRegexString =
+  '[19][mspMSP]\\*?|[rgwRGW][dD]\\*?|[eswnESWN][wW]\\*?';
 const standardHandRegexString = `(?:(?:${tileRegexString}){2,4}:?){5}`;
 const sevenPairsHandRegexString = `(?:(?:${tileRegexString}){2}:?){7}`;
-const thirteenGatesHandRegexString = `(?:(?:${tileRegexString}){1}:?){14}`;
+const thirteenGatesHandRegexString = `(?:(?:${terminalOrHonorTileRegexString}){1}:?){14}`;
 const handConditionsRegex =
   /^(?:(?:to|ri|dr|iu|hi|rn|cn)(?::(?:to|ri|dr|iu|hi|rn|cn))*)?$/;
 const gameConditionsRegex = /^not implemented yet$/;
@@ -128,6 +131,7 @@ export default class Hand {
           return result;
         },
         {
+          single: 0,
           chow: 0,
           pon: 0,
           kan: 0,
@@ -141,7 +145,8 @@ export default class Hand {
           (countTypes.pair === 1 &&
             countTypes.chow + countTypes.pon + countTypes.kan === 4) ||
           (countTypes.pair === 7 &&
-            countTypes.chow + countTypes.pon + countTypes.kan === 0)
+            countTypes.chow + countTypes.pon + countTypes.kan === 0) ||
+          countTypes.single === 14
         )
       ) {
         throw new Error('Invalid count of melds in the hand');

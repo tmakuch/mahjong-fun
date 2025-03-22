@@ -76,6 +76,17 @@ export const workingHands = [
       ],
     },
   },
+  // {
+  //   input: '1P:9P:1S:9S:1M:9M:WD:GD:RD:EW:SW:WW:NW:1P*',
+  //   expected: {
+  //     tournament: [
+  //       '(1P) (9P) (1S) (9S) (1M) (9M) (WD) (GD) (RD) (EW) (SW) (WW) (NW) (1P*):',
+  //     ],
+  //     leisure: [
+  //       '(1P) (9P) (1S) (9S) (1M) (9M) (WD) (GD) (RD) (EW) (SW) (WW) (NW) (1P*):',
+  //     ],
+  //   },
+  // },
 ];
 
 export const winningHands = [

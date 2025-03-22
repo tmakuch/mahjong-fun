@@ -2,7 +2,7 @@ import { Tile } from './Tile';
 
 export default class Meld {
   public tiles: Tile[];
-  public type: 'pair' | 'pon' | 'kan' | 'chow';
+  public type: 'single' | 'pair' | 'pon' | 'kan' | 'chow';
 
   public get suit() {
     return this.tiles[0].suit;
@@ -15,6 +15,9 @@ export default class Meld {
   constructor(tiles: Tile[]) {
     this.tiles = tiles;
     switch (tiles.length) {
+      case 1:
+        this.type = 'single';
+        break;
       case 2:
         this.type = 'pair';
         break;
