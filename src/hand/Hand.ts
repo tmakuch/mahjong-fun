@@ -14,10 +14,10 @@ type Conditions = {
   /*Cn*/ isChankan: boolean; //Robbing a kan
 };
 
-const tileRegex = '(?:[1-9][mspMSP]\\*?|[rgwRGW][dD]\\*?|[eswnESWN][wW]\\*?)';
-const standardHandRegex = `(?:${tileRegex}{2,4}:?){5}`;
-const sevenPairsHandRegex = `(?:${tileRegex}{2}:?){7}`;
-const thirteenGatesHandRegex = `(?:${tileRegex}{1}:?){14}`;
+const tileRegex = '[1-9][mspMSP]\\*?|[rgwRGW][dD]\\*?|[eswnESWN][wW]\\*?';
+const standardHandRegex = `(?:(?:${tileRegex}){2,4}:?){5}`;
+const sevenPairsHandRegex = `(?:(?:${tileRegex}){2}:?){7}`;
+const thirteenGatesHandRegex = `(?:(?:${tileRegex}){1}:?){14}`;
 const conditionRegex =
   '(?:;|;(?:to|ri|dr|iu|hi|rn|cn)(?::(?:to|ri|dr|iu|hi|rn|cn))*)?';
 
@@ -36,8 +36,6 @@ export default class Hand {
     input: string,
     allowReshuffle: boolean,
   ): Hand[] {
-    const singleTileRegex =
-      /[1-9][mspMSP]\*?|[rgwRGW][dD]\*?|[eswnESWN][wW]\*?/g;
     if (
       ![
         standardHandRegex + conditionRegex,
@@ -52,7 +50,7 @@ export default class Hand {
     const conditions = parseConditions(rawConditions);
 
     if (allowReshuffle) {
-      const rawHand = rawTiles.match(singleTileRegex);
+      const rawHand = rawTiles.match(new RegExp(tileRegex, 'g'));
       if (!rawHand) {
         throw new Error('Invalid hand - could not parse tiles');
       }
@@ -113,7 +111,7 @@ export default class Hand {
       const melds: Meld[] = [];
 
       rawTiles.split(':').forEach((rawMeld) => {
-        const rawTiles = rawMeld.match(singleTileRegex);
+        const rawTiles = rawMeld.match(new RegExp(tileRegex, 'g'));
         if (!rawTiles) {
           throw new Error('Invalid hand - could not parse tiles');
         }
