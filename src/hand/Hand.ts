@@ -14,6 +14,13 @@ type Conditions = {
   /*Cn*/ isChankan: boolean; //Robbing a kan
 };
 
+const tileRegex = '(?:[1-9][mspMSP]\\*?|[rgwRGW][dD]\\*?|[eswnESWN][wW]\\*?)';
+const standardHandRegex = `(?:${tileRegex}{2,4}:?){5}`;
+const sevenPairsHandRegex = `(?:${tileRegex}{2}:?){7}`;
+const thirteenGatesHandRegex = `(?:${tileRegex}{1}:?){14}`;
+const conditionRegex =
+  '(?:;|;(?:to|ri|dr|iu|hi|rn|cn)(?::(?:to|ri|dr|iu|hi|rn|cn))*)?';
+
 export default class Hand {
   public yaku: Yaku[];
 
@@ -32,9 +39,11 @@ export default class Hand {
     const singleTileRegex =
       /[1-9][mspMSP]\*?|[rgwRGW][dD]\*?|[eswnESWN][wW]\*?/g;
     if (
-      !/^(?:(?:[1-9][mspMSP]\*?|[rgwRGW][dD]\*?|[eswnESWN][wW]\*?){2,4}:?){5}(?:;|;(?:to|ri|dr|iu|hi|rn|cn)(?::(?:to|ri|dr|iu|hi|rn|cn))*)?$/g.test(
-        input,
-      )
+      ![
+        standardHandRegex + conditionRegex,
+        sevenPairsHandRegex + conditionRegex,
+        thirteenGatesHandRegex + conditionRegex,
+      ].some((regex) => new RegExp('^' + regex + '$').test(input))
     ) {
       throw new Error('Invalid hand - could not parse hand');
     }
