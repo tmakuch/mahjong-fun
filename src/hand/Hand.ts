@@ -14,12 +14,13 @@ type Conditions = {
   /*Cn*/ isChankan: boolean; //Robbing a kan
 };
 
-const tileRegex = '[1-9][mspMSP]\\*?|[rgwRGW][dD]\\*?|[eswnESWN][wW]\\*?';
-const standardHandRegex = `(?:(?:${tileRegex}){2,4}:?){5}`;
-const sevenPairsHandRegex = `(?:(?:${tileRegex}){2}:?){7}`;
-const thirteenGatesHandRegex = `(?:(?:${tileRegex}){1}:?){14}`;
-const conditionRegex =
-  '(?:;|;(?:to|ri|dr|iu|hi|rn|cn)(?::(?:to|ri|dr|iu|hi|rn|cn))*)?';
+const tileRegexString = '[1-9][mspMSP]\\*?|[rgwRGW][dD]\\*?|[eswnESWN][wW]\\*?';
+const standardHandRegexString = `(?:(?:${tileRegexString}){2,4}:?){5}`;
+const sevenPairsHandRegexString = `(?:(?:${tileRegexString}){2}:?){7}`;
+const thirteenGatesHandRegexString = `(?:(?:${tileRegexString}){1}:?){14}`;
+const handConditionsRegex =
+  /^(?:(?:to|ri|dr|iu|hi|rn|cn)(?::(?:to|ri|dr|iu|hi|rn|cn))*)?$/;
+const gameConditionsRegex = /^not implemented yet$/;
 
 export default class Hand {
   public yaku: Yaku[];
@@ -36,21 +37,22 @@ export default class Hand {
     input: string,
     allowReshuffle: boolean,
   ): Hand[] {
+    const [rawTiles, rawHandConditions, rawGameConditions] = input.split(';');
     if (
       ![
-        standardHandRegex + conditionRegex,
-        sevenPairsHandRegex + conditionRegex,
-        thirteenGatesHandRegex + conditionRegex,
-      ].some((regex) => new RegExp('^' + regex + '$').test(input))
+        standardHandRegexString,
+        sevenPairsHandRegexString,
+        thirteenGatesHandRegexString,
+      ].some((regex) => new RegExp('^' + regex + '$').test(rawTiles)) ||
+      (rawHandConditions && !handConditionsRegex.test(rawHandConditions)) ||
+      (rawGameConditions && !gameConditionsRegex.test(rawGameConditions))
     ) {
       throw new Error('Invalid hand - could not parse hand');
     }
-
-    const [rawTiles, rawConditions] = input.split(';');
-    const conditions = parseConditions(rawConditions);
+    const conditions = parseConditions(rawHandConditions);
 
     if (allowReshuffle) {
-      const rawHand = rawTiles.match(new RegExp(tileRegex, 'g'));
+      const rawHand = rawTiles.match(new RegExp(tileRegexString, 'g'));
       if (!rawHand) {
         throw new Error('Invalid hand - could not parse tiles');
       }
@@ -111,7 +113,7 @@ export default class Hand {
       const melds: Meld[] = [];
 
       rawTiles.split(':').forEach((rawMeld) => {
-        const rawTiles = rawMeld.match(new RegExp(tileRegex, 'g'));
+        const rawTiles = rawMeld.match(new RegExp(tileRegexString, 'g'));
         if (!rawTiles) {
           throw new Error('Invalid hand - could not parse tiles');
         }
