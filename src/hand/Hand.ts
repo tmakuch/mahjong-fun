@@ -2,6 +2,7 @@ import { ATile, DragonTile, Meld, SuitTile, WindTile } from './index';
 import { findWinningHand } from './winningHands/standard';
 import Yaku from '@/yaku/Yaku';
 import { findValidYaku } from '@/yaku/yakuFinder';
+import { findSevenPairs } from '@/hand/winningHands/sevenPairs';
 
 type Conditions = {
   /*To*/ isTsumo: boolean;
@@ -49,6 +50,7 @@ export default class Hand {
       const hand = rawHand.map(ATile.getTile);
 
       return [
+        findSevenPairs(hand),
         findWinningHand(hand, {
           prioritizeTriples: false,
           prioritizePair: false,

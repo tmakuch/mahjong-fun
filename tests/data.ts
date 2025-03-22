@@ -63,6 +63,19 @@ export const workingHands = [
       ],
     },
   },
+  {
+    input: '2P2P:3P3P:4P4P:5P5P:6P6P:7P7P:8P8P*',
+    expected: {
+      tournament: [
+        '(2P,2P) (3P,3P) (4P,4P) (5P,5P) (6P,6P) (7P,7P) (8P,8P*): 1x Menzen tsumo (1 han), 1x Tanyao (1 han)',
+      ],
+      leisure: [
+        '(2P,2P) (3P,3P) (4P,4P) (5P,5P) (6P,6P) (7P,7P) (8P,8P*): 1x Menzen tsumo (1 han), 1x Tanyao (1 han)',
+        '(2P,3P,4P) (2P,3P,4P) (5P,6P,7P) (5P,6P,7P) (8P,8P*): 1x Menzen tsumo (1 han), 1x Tanyao (1 han)',
+        '(3P,4P,5P) (3P,4P,5P) (6P,7P,8P) (6P,7P,8P*) (2P,2P): 1x Menzen tsumo (1 han), 1x Pinfu (1 han), 1x Tanyao (1 han)',
+      ],
+    },
+  },
 ];
 
 export const winningHands = [
